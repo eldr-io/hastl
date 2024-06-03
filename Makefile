@@ -11,4 +11,12 @@ ghcid-devel: ## Run the server in fast development mode. See DevelMain for detai
 imports: ## Format all the imports that have changed since the master branch.
 	./stylish-haskell.sh
 
+.PHONY: tailwind-watch
+tailwind-watch:
+	./tailwindcss -i ./static/css/custom.css -o ./static/css/style.css --watch
+
+.PHONY: tailwind-build
+tailwind-build:
+	./tailwindcss -i ./static/css/custom.css -o ./static/css/style.min.css --minify
+
 .PHONY: ghcid-devel help imports

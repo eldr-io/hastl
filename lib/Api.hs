@@ -34,7 +34,7 @@ function creates a WAI application that just serves the files out of the
 given directory.
 -}
 files :: Server Raw
-files = serveDirectoryFileServer "assets"
+files = serveDirectoryFileServer "static"
 
 {- | Just like a normal API type, we can use the ':<|>' combinator to unify
 two different APIs and applications. This is a powerful tool for code

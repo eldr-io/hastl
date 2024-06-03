@@ -11,28 +11,33 @@ module Logger (
   Severity (..),
 ) where
 
-import Control.Monad.Logger
-    ( ToLogStr, LogLevel(..), LogSource, Loc )
-import qualified Control.Monad.Logger as Logger
-import Katip
-    ( defaultScribeSettings,
-      initLogEnv,
-      logMsg,
-      logStr,
-      permitItem,
-      registerScribe,
-      runKatipT,
-      mkHandleScribe,
-      Katip(..),
-      KatipT(..),
-      LogEnv,
-      LogStr,
-      Namespace(Namespace),
-      Severity(..),
-      Verbosity(V2),
-      ColorStrategy(ColorIfTerminal) )
-import qualified System.IO as IO
-import qualified System.Log.FastLogger as FastLogger
+import Control.Monad.Logger (
+  Loc,
+  LogLevel (..),
+  LogSource,
+  ToLogStr,
+ )
+import Control.Monad.Logger qualified as Logger
+import Katip (
+  ColorStrategy (ColorIfTerminal),
+  Katip (..),
+  KatipT (..),
+  LogEnv,
+  LogStr,
+  Namespace (Namespace),
+  Severity (..),
+  Verbosity (V2),
+  defaultScribeSettings,
+  initLogEnv,
+  logMsg,
+  logStr,
+  mkHandleScribe,
+  permitItem,
+  registerScribe,
+  runKatipT,
+ )
+import System.IO qualified as IO
+import System.Log.FastLogger qualified as FastLogger
 
 defaultLogEnv :: IO LogEnv
 defaultLogEnv = do

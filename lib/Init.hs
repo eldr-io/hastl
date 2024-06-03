@@ -40,6 +40,7 @@ runAppDevel = do
       initialize config
         `finally` say "exited: initialize config"
     say "post-initialize"
+    say "Server running.."
     run (configPort config) cfg
       `finally` say "server is closed"
 

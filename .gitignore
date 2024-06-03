@@ -21,3 +21,7 @@ cabal.project.local
 cabal.project.local~
 .HTF/
 .ghc.environment.*
+tailwindcss
+
+static/css/style.min.css
+static/css/*.min.css
