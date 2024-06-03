@@ -37,7 +37,7 @@ library
       , foreign-store
       , katip == 0.8.8.0 
       , lucid2
-      , lucid2-htmx
+      -- , lucid2-htmx
       , microlens
       , monad-control
       , monad-logger
@@ -51,6 +51,7 @@ library
       , say
       , servant 
       , servant-server
+      , dani-servant-lucid2
       , text
       , transformers
       , unordered-containers

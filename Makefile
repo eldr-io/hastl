@@ -19,4 +19,12 @@ tailwind-watch:
 tailwind-build:
 	./tailwindcss -i ./static/css/custom.css -o ./static/css/style.min.css --minify
 
+.PHONY: build
+build: tailwind-build
+	cabal build
+
+.PHONY: run
+run: tailwind-build
+	cabal run
+
 .PHONY: ghcid-devel help imports

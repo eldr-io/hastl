@@ -15,35 +15,39 @@ import Database.Persist.Postgresql (
   selectList,
   (==.),
  )
-import Servant
-    ( throwError,
-      Proxy(..),
-      err404,
-      type (:<|>)(..),
-      Capture,
-      JSON,
-      ReqBody,
-      type (:>),
-      Get,
-      Post,
-      HasServer(ServerT) )
+import Servant (
+  Capture,
+  Get,
+  HasServer (ServerT),
+  JSON,
+  Post,
+  Proxy (..),
+  ReqBody,
+  err404,
+  throwError,
+  type (:<|>) (..),
+  type (:>),
+ )
 
 import Config (AppT (..))
 import Data.Text (Text)
+import Lucid (Html, HtmlT, ToHtml (toHtml), class_, div_, p_)
+import Servant.API.ContentTypes.Lucid ( HTML )
 import Models (User (User), runDb, userEmail, userName)
-import qualified Models as Md
+import Models qualified as Md
 
 type UserAPI =
   "users" :> Get '[JSON] [Entity User]
     :<|> "users" :> Capture "name" Text :> Get '[JSON] (Entity User)
     :<|> "users" :> ReqBody '[JSON] User :> Post '[JSON] Int64
+    :<|> "usersTable" :> Get '[HTML] (Html ())
 
 userApi :: Proxy UserAPI
 userApi = Proxy
 
 -- | The server that runs the UserAPI
 userServer :: (MonadIO m) => ServerT UserAPI (AppT m)
-userServer = allUsers :<|> singleUser :<|> createUser
+userServer = allUsers :<|> singleUser :<|> createUser :<|> allUsersTbl
 
 -- | Returns all users in the database.
 allUsers :: (MonadIO m) => AppT m [Entity User]
@@ -68,3 +72,11 @@ createUser p = do
   logDebugNS "web" "creating a user"
   newUser <- runDb (insert (User (userName p) (userEmail p)))
   return $ fromSqlKey newUser
+
+allUsersTbl :: (MonadIO m) => AppT m (Html ())
+allUsersTbl = do
+  users :: [Entity User] <- runDb (selectList [] [])
+  return $
+    div_ [class_ ""] (do (mapM_ f users))
+  where f (Entity _ u) = p_ (toHtml (userName u))
+

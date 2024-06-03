@@ -5,6 +5,7 @@ module Api (app) where
 
 import Control.Monad.Reader (runReaderT)
 import Servant (
+  MimeRender,
   Proxy (Proxy),
   Raw,
   serveDirectoryFileServer,
@@ -14,6 +15,7 @@ import Servant.Server
 
 import Api.User (UserAPI, userApi, userServer)
 import Config (AppT (..), Config (..))
+import Lucid (ToHtml)
 
 {- | This functions tells Servant how to run the 'App' monad with our
 'server' function.
@@ -50,5 +52,6 @@ appApi = Proxy
 alongside the 'Raw' endpoint that serves all of our files.
 -}
 app :: Config -> Application
-app cfg =
-  serve appApi (appToServer cfg :<|> files)
+app cfg = do
+  let appCfg = appToServer cfg
+  serve appApi (appCfg :<|> files)
