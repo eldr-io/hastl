@@ -5,7 +5,6 @@ module Api (app) where
 
 import Control.Monad.Reader (runReaderT)
 import Servant (
-  MimeRender,
   Proxy (Proxy),
   Raw,
   serveDirectoryFileServer,
@@ -15,7 +14,6 @@ import Servant.Server
 
 import Api.User (UserAPI, userApi, userServer)
 import Config (AppT (..), Config (..))
-import Lucid (ToHtml)
 
 {- | This functions tells Servant how to run the 'App' monad with our
 'server' function.
@@ -31,7 +29,7 @@ convertApp :: Config -> AppT IO a -> Handler a
 convertApp cfg appt = Handler $ runReaderT (runApp appt) cfg
 
 {- | Since we also want to provide a minimal front end, we need to give
-Servant a way to serve a directory with HTML and JavaScript. This
+Servant a way to serve a directory with HTML and CSS. This
 function creates a WAI application that just serves the files out of the
 given directory.
 -}

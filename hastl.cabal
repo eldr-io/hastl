@@ -24,6 +24,9 @@ library
       , Models
       , Api
       , Api.User
+      , Api.Base
+      , Api.Templates.User
+      , Api.Templates.Base.Footer
       , Logger
       , DevelMain
     -- other-modules:

@@ -31,29 +31,30 @@ import Servant (
 
 import Config (AppT (..))
 import Data.Text (Text)
-import Lucid (Html, ToHtml (toHtml), class_, div_, p_)
+import Lucid (Html)
 import Servant.API.ContentTypes.Lucid ( HTML )
 import Models (User (User), runDb, userEmail, userName)
 import Models qualified as Md
+import Api.Templates.User (renderUsers)
 
 type UserAPI =
-  "users" :> Get '[JSON] [Entity User]
+  "users" :> Get '[HTML] (Html ())
     :<|> "users" :> Capture "name" Text :> Get '[JSON] (Entity User)
     :<|> "users" :> ReqBody '[JSON] User :> Post '[JSON] Int64
-    :<|> "usersTable" :> Get '[HTML] (Html ())
 
 userApi :: Proxy UserAPI
 userApi = Proxy
 
 -- | The server that runs the UserAPI
 userServer :: (MonadIO m) => ServerT UserAPI (AppT m)
-userServer = allUsers :<|> singleUser :<|> createUser :<|> allUsersTbl
+userServer = allUsers :<|> singleUser :<|> createUser
 
 -- | Returns all users in the database.
-allUsers :: (MonadIO m) => AppT m [Entity User]
+allUsers :: (MonadIO m) => AppT m (Html ())
 allUsers = do
   logDebugNS "web" "allUsers"
-  runDb (selectList [] [])
+  users :: [Entity User] <- runDb (selectList [] [])
+  return $ renderUsers (map entityVal users)
 
 -- | Returns a user by name or throws a 404 error.
 singleUser :: (MonadIO m) => Text -> AppT m (Entity User)
@@ -72,11 +73,3 @@ createUser p = do
   logDebugNS "web" "creating a user"
   newUser <- runDb (insert (User (userName p) (userEmail p)))
   return $ fromSqlKey newUser
-
-allUsersTbl :: (MonadIO m) => AppT m (Html ())
-allUsersTbl = do
-  users :: [Entity User] <- runDb (selectList [] [])
-  return $
-    div_ [class_ ""] (do (mapM_ f users))
-  where f (Entity _ u) = p_ (toHtml (userName u))
-
