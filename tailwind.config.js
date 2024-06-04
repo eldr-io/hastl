@@ -3,7 +3,7 @@ module.exports = {
   content: [
     "./static/*.{html,js}",
     "./static/**/*.{html,js}",
-    "./lib/Api/Templates/*.hs",
+    "./lib/Api/Templates/**/*.hs",
   ],
   theme: {
     container: {

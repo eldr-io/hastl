@@ -13,6 +13,7 @@ import Servant (
 import Servant.Server
 
 import Api.User (UserAPI, userApi, userServer)
+import Api.Base (BaseAPI, baseApi, baseServer)
 import Config (AppT (..), Config (..))
 
 {- | This functions tells Servant how to run the 'App' monad with our
@@ -20,6 +21,10 @@ import Config (AppT (..), Config (..))
 -}
 appToServer :: Config -> Server UserAPI
 appToServer cfg = hoistServer userApi (convertApp cfg) userServer
+
+
+appToBaseServer :: Config -> Server BaseAPI
+appToBaseServer cfg = hoistServer baseApi (convertApp cfg) baseServer
 
 {- | This function converts our @'AppT' m@ monad into the @ExceptT ServantErr
 m@ monad that Servant's 'enter' function needs in order to run the
@@ -41,7 +46,7 @@ two different APIs and applications. This is a powerful tool for code
 reuse and abstraction! We need to put the 'Raw' endpoint last, since it
 always succeeds.
 -}
-type AppAPI = UserAPI :<|> Raw
+type AppAPI = UserAPI :<|> BaseAPI :<|> Raw
 
 appApi :: Proxy AppAPI
 appApi = Proxy
@@ -52,4 +57,4 @@ alongside the 'Raw' endpoint that serves all of our files.
 app :: Config -> Application
 app cfg = do
   let appCfg = appToServer cfg
-  serve appApi (appCfg :<|> files)
+  serve appApi (appCfg :<|> appToBaseServer cfg :<|> files)

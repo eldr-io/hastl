@@ -27,12 +27,14 @@ library
       , Api.Base
       , Api.Templates.User
       , Api.Templates.Base.Footer
+      , Api.Templates.Helpers.Htmx
+      , Api.Templates.Helpers.Alpine
       , Logger
       , DevelMain
-    -- other-modules:
-    -- other-extensions:
+    default-extensions:
+      OverloadedStrings
     build-depends:    
-      base
+        base
       , aeson
       , bytestring
       , containers
@@ -40,7 +42,6 @@ library
       , foreign-store
       , katip == 0.8.8.0 
       , lucid2
-      -- , lucid2-htmx
       , microlens
       , monad-control
       , monad-logger
