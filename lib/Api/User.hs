@@ -31,7 +31,7 @@ import Servant (
 
 import Config (AppT (..))
 import Data.Text (Text)
-import Lucid (Html, HtmlT, ToHtml (toHtml), class_, div_, p_)
+import Lucid (Html, ToHtml (toHtml), class_, div_, p_)
 import Servant.API.ContentTypes.Lucid ( HTML )
 import Models (User (User), runDb, userEmail, userName)
 import Models qualified as Md
