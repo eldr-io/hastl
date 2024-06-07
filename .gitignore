@@ -24,4 +24,5 @@ cabal.project.local~
 tailwindcss
 
 static/css/style.min.css
+static/css/style.css
 static/css/*.min.css
