@@ -47,7 +47,7 @@ renderUser user = do
       p_ [class_ "text-sm font-normal text-gray-600"] "Party Animal"
 
 renderUsers :: [Entity User] -> Html ()
-renderUsers [] = p_ "No guests yet..."
+renderUsers [] = ul_ [id_ "users-ul", class_ "divide-y divide-gray-200"] $ li_ [] "No data"
 renderUsers users = do
   ul_ [id_ "users-ul", class_ "divide-y divide-gray-200"] $ do
     mapM_ renderUser users
