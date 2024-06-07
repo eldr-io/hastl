@@ -17,7 +17,7 @@ tailwind-watch:
 
 .PHONY: tailwind-build
 tailwind-build:
-	./tailwindcss -i ./static/css/custom.css -o ./static/css/style.min.css --minify
+	./tailwindcss -i ./static/css/custom.css -o ./static/css/style.css
 
 .PHONY: build
 build: tailwind-build

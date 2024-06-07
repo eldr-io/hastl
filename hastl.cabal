@@ -25,10 +25,12 @@ library
       , Api
       , Api.User
       , Api.Base
-      , Api.Templates.User
+      , Api.Templates.User.User
       , Api.Templates.Base.Footer
+      , Api.Templates.Base.Header
       , Api.Templates.Helpers.Htmx
       , Api.Templates.Helpers.Alpine
+      , Api.Templates.Helpers.Icons
       , Logger
       , DevelMain
     default-extensions:
@@ -64,6 +66,7 @@ library
       , wai-middleware-metrics
       , warp
       , resource-pool
+      , random
     hs-source-dirs:   lib
     default-language: GHC2021
 

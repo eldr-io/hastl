@@ -32,9 +32,9 @@
 
 module Api.Templates.Helpers.Htmx where
 
-import Lucid.Base
 import Data.Text (Text, pack)
-import Lucid (script_, defer_, src_)
+import Lucid (defer_, script_, src_)
+import Lucid.Base
 
 -- | <https://htmx.org/attributes/hx-boost/>
 hxBoost_ :: Text -> Attributes
@@ -144,13 +144,64 @@ hxVals_ = makeAttributes "data-hx-vals"
 hxWs_ :: Text -> Attributes
 hxWs_ = makeAttributes "data-hx-ws"
 
+ariaCurrent_ :: Text -> Attributes
+ariaCurrent_ = makeAttributes "aria-current"
+
+ariaExpanded_ :: Text -> Attributes
+ariaExpanded_ = makeAttributes "aria-expanded"
+
+ariaControls_ :: Text -> Attributes
+ariaControls_ = makeAttributes "aria-controls"
+
+ariaHidden_ :: Text -> Attributes
+ariaHidden_ = makeAttributes "aria-hidden"
+
+strokeWidth_ :: Text -> Attributes
+strokeWidth_ = makeAttributes "stroke-width"
+
+stroke_ :: Text -> Attributes
+stroke_ = makeAttributes "stroke"
+
+strokeLinecap_ :: Text -> Attributes
+strokeLinecap_ = makeAttributes "stroke-linecap"
+
+strokeLineJoin_ :: Text -> Attributes
+strokeLineJoin_ = makeAttributes "stroke-linejoin"
+
+fill_ :: Text -> Attributes
+fill_ = makeAttributes "fill"
+
+viewBox_ :: Text -> Attributes
+viewBox_ = makeAttributes "viewBox"
+
+d_ :: Text -> Attributes
+d_ = makeAttributes "d"
+
+path_ :: (Term arg result) => arg -> result
+path_ = term "path"
+
+r_ :: (Term arg result) => arg -> result
+r_ = term "r"
+
+cx_ :: (Term arg result) => arg -> result
+cx_ = term "cx"
+
+cy_ :: (Term arg result) => arg -> result
+cy_ = term "cy"
+
+circle_ :: (Term arg result) => arg -> result
+circle_ = term "circle"
+
 -- | Use this value in your @head_@ tag to use htmx in your lucid templates
-useHtmx :: Monad m => HtmlT m ()
+useHtmx :: (Monad m) => HtmlT m ()
 useHtmx = script_ [defer_ "", src_ htmxSrc] ("" :: Html ())
 
 -- | Choose the version of Alpine.js to use using a 3-tuple representing semantic versioning
-useHtmxVersion :: Monad m => (Int, Int, Int) -> HtmlT m ()
+useHtmxVersion :: (Monad m) => (Int, Int, Int) -> HtmlT m ()
 useHtmxVersion semVer = script_ [defer_ "", src_ $ htmxSrcWithSemVer semVer] ("" :: Html ())
+
+useHtmxJsExt :: (Monad m) => HtmlT m ()
+useHtmxJsExt = script_ [defer_ "", src_ "https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"] ("" :: Html ())
 
 htmxSrc :: Text
 htmxSrc = "https://unpkg.com/htmx.org"
@@ -165,5 +216,5 @@ htmxSrcWithSemVer (major, minor, patch) =
     <> "."
     <> showT patch
 
-showT :: Show a => a -> Text
+showT :: (Show a) => a -> Text
 showT = pack . show

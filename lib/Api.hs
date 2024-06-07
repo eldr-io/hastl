@@ -19,8 +19,8 @@ import Config (AppT (..), Config (..))
 {- | This functions tells Servant how to run the 'App' monad with our
 'server' function.
 -}
-appToServer :: Config -> Server UserAPI
-appToServer cfg = hoistServer userApi (convertApp cfg) userServer
+appToUserServer :: Config -> Server UserAPI
+appToUserServer cfg = hoistServer userApi (convertApp cfg) userServer
 
 
 appToBaseServer :: Config -> Server BaseAPI
@@ -56,5 +56,6 @@ alongside the 'Raw' endpoint that serves all of our files.
 -}
 app :: Config -> Application
 app cfg = do
-  let appCfg = appToServer cfg
-  serve appApi (appCfg :<|> appToBaseServer cfg :<|> files)
+  let userServerCfg = appToUserServer cfg
+      appServerCfg = appToBaseServer cfg
+  serve appApi (userServerCfg :<|> appServerCfg :<|> files)

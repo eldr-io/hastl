@@ -6,10 +6,8 @@ module Api.User where
 
 import Control.Monad.Except (MonadIO)
 import Control.Monad.Logger (logDebugNS)
-import Data.Int (Int64)
 import Database.Persist.Postgresql (
   Entity (..),
-  fromSqlKey,
   insert,
   selectFirst,
   selectList,
@@ -29,18 +27,19 @@ import Servant (
   type (:>),
  )
 
+import Api.Templates.Helpers.Htmx (hxTarget_)
+import Api.Templates.User.User (renderUser, renderUsersComponent)
 import Config (AppT (..))
 import Data.Text (Text)
-import Lucid (Html)
-import Servant.API.ContentTypes.Lucid ( HTML )
+import Lucid (Html, div_)
 import Models (User (User), runDb, userEmail, userName)
 import Models qualified as Md
-import Api.Templates.User (renderUsers)
+import Servant.API.ContentTypes.Lucid (HTML)
 
 type UserAPI =
   "users" :> Get '[HTML] (Html ())
     :<|> "users" :> Capture "name" Text :> Get '[JSON] (Entity User)
-    :<|> "users" :> ReqBody '[JSON] User :> Post '[JSON] Int64
+    :<|> "users" :> ReqBody '[JSON] User :> Post '[HTML] (Html ())
 
 userApi :: Proxy UserAPI
 userApi = Proxy
@@ -54,7 +53,7 @@ allUsers :: (MonadIO m) => AppT m (Html ())
 allUsers = do
   logDebugNS "web" "allUsers"
   users :: [Entity User] <- runDb (selectList [] [])
-  return $ renderUsers (map entityVal users)
+  return $ renderUsersComponent users
 
 -- | Returns a user by name or throws a 404 error.
 singleUser :: (MonadIO m) => Text -> AppT m (Entity User)
@@ -68,8 +67,12 @@ singleUser str = do
       return person
 
 -- | Creates a user in the database.
-createUser :: (MonadIO m) => User -> AppT m Int64
-createUser p = do
+createUser :: (MonadIO m) => User -> AppT m (Html ())
+createUser u = do
   logDebugNS "web" "creating a user"
-  newUser <- runDb (insert (User (userName p) (userEmail p)))
-  return $ fromSqlKey newUser
+  newUser <- runDb (insert (User (userName u) (userEmail u)))
+  maybeUser <- runDb (selectFirst [Md.UserId ==. newUser] [])
+  case maybeUser of
+    Nothing -> return $ div_ [hxTarget_ "#errors"] "Failed to create user"
+    Just user -> do
+      return $ renderUser user

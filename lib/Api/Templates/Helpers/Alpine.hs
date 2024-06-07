@@ -36,8 +36,9 @@ import Data.Text (Text, intercalate, pack)
 import Lucid (Html, HtmlT, defer_, script_, src_)
 import Lucid.Base (Attributes, makeAttributes)
 
--- | x-data
--- Declare a new Alpine component and its data for a block of HTML
+{- | x-data
+Declare a new Alpine component and its data for a block of HTML
+-}
 xData_ :: Text -> Attributes
 xData_ = makeAttributes "x-data"
 
@@ -47,8 +48,9 @@ xData_ = makeAttributes "x-data"
 </div>
 -}
 
--- | x-bind
--- Dynamically set HTML attributes on an element
+{- | x-bind
+Dynamically set HTML attributes on an element
+-}
 xBind_ ::
   -- | Attributes name
   Text ->
@@ -62,8 +64,9 @@ xBind_ attr = makeAttributes ("x-bind:" <> attr)
 </div>
 -}
 
--- | x-on
--- Listen for browser events on an element
+{- | x-on
+Listen for browser events on an element
+-}
 xOn_ ::
   -- | Event name
   Text ->
@@ -71,14 +74,24 @@ xOn_ ::
   Attributes
 xOn_ event = makeAttributes ("x-on:" <> event)
 
+{- | x-id
+ - Target a specific id
+-}
+xId_ ::
+  -- | Element id
+  Text ->
+  Attributes
+xId_ = makeAttributes "x-id"
+
 {-
 <button x-on:click="open = ! open">
   Toggle
 </button>
 -}
 
--- | x-text
--- Set the text content of an element
+{- | x-text
+Set the text content of an element
+-}
 xText_ :: Text -> Attributes
 xText_ = makeAttributes "x-text"
 
@@ -90,8 +103,9 @@ xText_ = makeAttributes "x-text"
 </div>
 -}
 
--- | x-html
--- Set the inner HTML of an element
+{- | x-html
+Set the inner HTML of an element
+-}
 xHtml_ :: Text -> Attributes
 xHtml_ = makeAttributes "x-html"
 
@@ -101,8 +115,9 @@ xHtml_ = makeAttributes "x-html"
 </div>
 -}
 
--- | x-model
--- Synchronize a piece of data with an input element
+{- | x-model
+Synchronize a piece of data with an input element
+-}
 xModel_ ::
   -- | List of x-model modifiers
   [Text] ->
@@ -120,8 +135,9 @@ xModel_ mods = case mods of
 </div>
 -}
 
--- | x-show
--- Toggle the visibility of an element
+{- | x-show
+Toggle the visibility of an element
+-}
 xShow_ :: Text -> Attributes
 xShow_ = makeAttributes "x-show"
 
@@ -131,8 +147,9 @@ xShow_ = makeAttributes "x-show"
 </div>
 -}
 
--- | x-transition
--- Transition an element in and out using CSS transitions
+{- | x-transition
+Transition an element in and out using CSS transitions
+-}
 xTransition_ ::
   -- | Transition directive
   Maybe Text ->
@@ -151,8 +168,9 @@ xTransition_ (Just dir) mods _ = makeAttributes ("x-transition:" <> dir <> "." <
 </div>
 -}
 
--- | x-for
--- Repeat a block of HTML based on a data set
+{- | x-for
+Repeat a block of HTML based on a data set
+-}
 xFor_ :: Text -> Attributes
 xFor_ = makeAttributes "x-for"
 
@@ -165,8 +183,9 @@ xForKey_ = makeAttributes ":key"
 </template>
 -}
 
--- | x-if
--- Conditionally add/remove a block of HTML from the page entirely.
+{- | x-if
+Conditionally add/remove a block of HTML from the page entirely.
+-}
 xIf_ :: Text -> Attributes
 xIf_ = makeAttributes "x-if"
 
@@ -176,8 +195,9 @@ xIf_ = makeAttributes "x-if"
 </template>
 -}
 
--- | x-init
--- Run code when an element is initialized by Alpine
+{- | x-init
+Run code when an element is initialized by Alpine
+-}
 xInit_ :: Text -> Attributes
 xInit_ = makeAttributes "x-init"
 
@@ -185,8 +205,9 @@ xInit_ = makeAttributes "x-init"
 <div x-init="date = new Date()"></div>
 -}
 
--- | x-effect
--- Execute a script each time one of its dependancies change
+{- | x-effect
+Execute a script each time one of its dependancies change
+-}
 xEffect_ :: Text -> Attributes
 xEffect_ = makeAttributes "x-effect"
 
@@ -194,8 +215,9 @@ xEffect_ = makeAttributes "x-effect"
 <div x-effect="console.log('Count is '+count)"></div>
 -}
 
--- | x-ref
--- Reference elements directly by their specified keys using the $refs magic property
+{- | x-ref
+Reference elements directly by their specified keys using the $refs magic property
+-}
 xRef_ :: Text -> Attributes
 xRef_ = makeAttributes "x-ref"
 
@@ -207,8 +229,9 @@ xRef_ = makeAttributes "x-ref"
 </button>
 -}
 
--- | x-cloak
--- Hide a block of HTML until after Alpine is finished initializing its contents
+{- | x-cloak
+Hide a block of HTML until after Alpine is finished initializing its contents
+-}
 xCloak_ :: Attributes
 xCloak_ = makeAttributes "x-cloak" mempty
 
@@ -218,8 +241,9 @@ xCloak_ = makeAttributes "x-cloak" mempty
 </div>
 -}
 
--- | x-ignore
--- Prevent a block of HTML from being initialized by Alpine
+{- | x-ignore
+Prevent a block of HTML from being initialized by Alpine
+-}
 xIgnore_ :: Attributes
 xIgnore_ = makeAttributes "x-ignore" mempty
 
@@ -230,11 +254,11 @@ xIgnore_ = makeAttributes "x-ignore" mempty
 -}
 
 -- | Use this value in your @head_@ tag to use Alpine.js in your lucid templates
-useAlpine :: Monad m => HtmlT m ()
+useAlpine :: (Monad m) => HtmlT m ()
 useAlpine = script_ [defer_ "", src_ alpineSrc] ("" :: Html ())
 
 -- | Choose the version of Alpine.js to use using a 3-tuple representing semantic versioning
-useAlpineVersion :: Monad m => (Int, Int, Int) -> HtmlT m ()
+useAlpineVersion :: (Monad m) => (Int, Int, Int) -> HtmlT m ()
 useAlpineVersion semVer = script_ [defer_ "", src_ $ alpineSrcWithSemVer semVer] ("" :: Html ())
 
 alpineSrc :: Text
@@ -250,5 +274,5 @@ alpineSrcWithSemVer (major, minor, patch) =
     <> "."
     <> showT patch
 
-showT :: Show a => a -> Text
+showT :: (Show a) => a -> Text
 showT = pack . show
