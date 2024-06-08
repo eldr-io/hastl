@@ -8,7 +8,6 @@ import Control.Monad.Except (MonadIO (liftIO))
 import Control.Monad.Logger (logDebugNS, logErrorNS)
 import Database.Persist.Postgresql (
   Entity (..),
-  PersistStoreRead (get),
   getEntity,
   insert,
   selectFirst,
@@ -24,7 +23,6 @@ import Servant (
   Proxy (..),
   ReqBody,
   ServerError (errBody, errHTTPCode, errHeaders),
-  addHeader,
   err404,
   err500,
   throwError,
@@ -32,14 +30,13 @@ import Servant (
   type (:>),
  )
 
-import Api.Templates.Helpers.Htmx (hxTarget_)
 import Api.Templates.User.User (renderUser, renderUsersComponent)
 import Config (AppT (..))
 import Data.Aeson (FromJSON)
 import Data.Text (Text, pack)
 import Data.Time (getCurrentTime)
 import GHC.Generics (Generic)
-import Lucid (Html, ToHtml (toHtml), class_, div_, id_, p_, renderBS)
+import Lucid (Html, ToHtml (toHtml), class_, div_, id_, renderBS)
 import Models (User (User), runDb, tryRunDb)
 import Models qualified as Md
 import Servant.API.ContentTypes.Lucid (HTML)

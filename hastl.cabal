@@ -90,15 +90,18 @@ test-suite hastl-test
     default-language: GHC2021
     other-modules:
       Api.UserSpec
-    -- other-extensions:
+    default-extensions:
+      OverloadedStrings
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test
     main-is:          Main.hs
     build-tool-depends: hspec-discover:hspec-discover
     build-depends:
-        base ^>=4.17.2.1,
-        hastl,
-        hspec
+        base ^>=4.17.2.1
+      , hastl
+      , hspec
+      , persistent-postgresql
+      , time
     ghc-options:
         -threaded -rtsopts -with-rtsopts=-N -fwarn-unused-imports
 

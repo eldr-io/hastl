@@ -1,10 +1,28 @@
-module Api.User.UserSpec where
+module Api.UserSpec where
 
-import Test.Hspec (Spec, describe, it, shouldBe)
-import hastl.Api.Templates.User (renderUser)
+import Api.Templates.User.User (renderUser)
+import Control.Monad.IO.Class (liftIO)
+import Data.Time (getCurrentTime)
+import Models (User (User), userCreatedAt, userEmail, userName)
+import Test.Hspec (Spec, before, context, describe, it, shouldBe)
+
+import Database.Persist.Postgresql (
+  Entity (..),
+  Key (..),
+ )
 
 spec :: Spec
-spec = do
-  describe "renderUser" $ do
-    it "renders a user" $ do
-      renderUser `shouldBe` "<div>user</div>"
+spec = before
+  ( do
+      time <- getCurrentTime
+      pure time
+  )
+  $ do
+    describe "templates" $ do
+      context "when rendering a user" $ do
+        it "renders a user" $
+          ( \t -> do
+              let user = User{userName = "user", userEmail = "hi@mom.com", userCreatedAt = t}
+              -- let entity = Entity (Key user) user
+              userName user `shouldBe` "user"
+          )

@@ -28,7 +28,7 @@ run: tailwind-build ## compiles tailwindcss styles and runs the project with cab
 
 .PHONY: test
 test: ## runs the unit test project
-	cabal test hastl-test --test-show-details=direct
+	cabal test hastl-test --enable-tests --test-show-details=direct
 
 .PHONY: test-integration
 test-integration: ## runs the integration test project
