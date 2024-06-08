@@ -140,6 +140,12 @@ hxTrigger_ = makeAttributes "data-hx-trigger"
 hxVals_ :: Text -> Attributes
 hxVals_ = makeAttributes "data-hx-vals"
 
+hxTarget500_ :: Text -> Attributes
+hxTarget500_ = makeAttributes "data-hx-target-500"
+
+hxTargetError_ :: Text -> Attributes
+hxTargetError_ = makeAttributes "data-hx-target-error"
+
 -- | <https://htmx.org/attributes/hx-ws/>
 hxWs_ :: Text -> Attributes
 hxWs_ = makeAttributes "data-hx-ws"
@@ -202,6 +208,9 @@ useHtmxVersion semVer = script_ [defer_ "", src_ $ htmxSrcWithSemVer semVer] (""
 
 useHtmxJsExt :: (Monad m) => HtmlT m ()
 useHtmxJsExt = script_ [defer_ "", src_ "https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"] ("" :: Html ())
+
+useHtmxRetargetErrorsExt :: (Monad m) => HtmlT m ()
+useHtmxRetargetErrorsExt = script_ [defer_ "", src_ "https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js"] ("" :: Html ())
 
 htmxSrc :: Text
 htmxSrc = "https://unpkg.com/htmx.org"

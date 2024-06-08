@@ -27,8 +27,10 @@ import Database.Persist.TH (
  )
 
 import Config (Config, configPool)
+import Control.Exception (SomeException, try)
 import Data.Text (Text)
-import Say ( say )
+import Data.Time.Clock (UTCTime)
+import Say (say)
 
 share
   [ mkPersist sqlSettings
@@ -38,6 +40,8 @@ share
 User json
     name Text
     email Text
+    createdAt UTCTime default=now()
+    UniqueEmail email
     deriving Show Eq
 |]
 
@@ -51,3 +55,8 @@ runDb :: (MonadReader Config m, MonadIO m) => SqlPersistT IO b -> m b
 runDb query = do
   pool <- asks configPool
   liftIO $ runSqlPool query pool
+
+tryRunDb :: (MonadReader Config m, MonadIO m) => SqlPersistT IO a -> m (Either SomeException a)
+tryRunDb query = do
+  pool <- asks configPool
+  liftIO $ try $ runSqlPool query pool

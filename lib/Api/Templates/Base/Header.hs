@@ -3,6 +3,7 @@ module Api.Templates.Base.Header where
 import Api.Templates.Helpers.Alpine
 import Api.Templates.Helpers.Htmx
 import Api.Templates.Helpers.Icons (iconChevronDown_, iconGithub_)
+import Data.Text (Text)
 import Lucid
 
 renderHeader :: Html () -> Html ()
@@ -42,7 +43,7 @@ renderBanner = do
             [ class_ "text-sm leading-6 text-gray-900"
             ]
             $ do
-              strong_ [class_ "font-semibold"] "hastl is built with haskell and is entirely free and open source"
+              strong_ [class_ "font-semibold"] "λ hastl is built with haskell and is entirely free and open source"
               svg_
                 [ viewBox_ "0 0 2 2"
                 , class_ "mx-2 inline h-0.5 w-0.5 fill-current"
@@ -90,11 +91,19 @@ renderDropdownBtn = do
         , class_ "w-full absolute top-12 left-0 p-2 bg-white border border-gray-200 rounded-lg shadow"
         ]
         $ do
-          div_ [class_ "px-2 py-1 cursor-pointer hover:bg-sky-100 rounded-lg"] "First item"
-          div_ [class_ "px-2 py-1 cursor-pointer hover:bg-sky-100 rounded-lg"] "Second item"
+          div_
+            [ xOn_ "click" "window.open('https://github.com/eldr-io/hastl', '_blank').focus();"
+            , class_ "px-2 py-1 cursor-pointer hover:bg-sky-100 rounded-lg"
+            ]
+            "Github"
+          div_
+            [ xOn_ "click" "window.open('https://github.com/eldr-io/hastl/blob/main/README.md', '_blank').focus();"
+            , class_ "px-2 py-1 cursor-pointer hover:bg-sky-100 rounded-lg"
+            ]
+            "Documentation"
 
-renderNavigation :: Html ()
-renderNavigation = do
+renderNavigation :: Text -> Html ()
+renderNavigation activeItem = do
   nav_ [class_ "bg-white border-gray-200 py-2.5 dark:bg-gray-900"] $ do
     div_ [class_ "flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto"] $ do
       a_ [href_ "/", class_ "flex items-center"] $ do
@@ -104,5 +113,10 @@ renderNavigation = do
         renderDropdownBtn
       div_ [class_ "items-center justify-between w-full lg:flex lg:w-auto lg:order-1", id_ "mobile-menu-2"] $ do
         ul_ [class_ "flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0"] $ do
-          li_ $ a_ [href_ "/", class_ "block py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0 dark:text-white", ariaCurrent_ "page"] "Home"
-          li_ $ a_ [href_ "/about", hxBoost_ "true", class_ "block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"] "About"
+          mapM_ renderNavigationItem [("/", "Home", activeItem == "Home"), ("/about", "About", activeItem == "About")]
+
+renderNavigationItem :: (Text, Text, Bool) -> Html ()
+renderNavigationItem (href, text, False) = do
+  li_ $ a_ [href_ href, class_ "block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"] (toHtml text)
+renderNavigationItem (href, text, True) = do
+  li_ $ a_ [href_ href, class_ "block py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0 dark:text-white"] (toHtml text)

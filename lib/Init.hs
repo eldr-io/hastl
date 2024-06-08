@@ -40,7 +40,8 @@ runAppDevel = do
       initialize config
         `finally` say "exited: initialize config"
     say "post-initialize"
-    say "Server running.."
+    let port = configPort config
+    say $ "Server running on port " <> Text.pack (show port) <> "..."
     run (configPort config) cfg
       `finally` say "server is closed"
 

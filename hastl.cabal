@@ -28,6 +28,8 @@ library
       , Api.Templates.User.User
       , Api.Templates.Base.Footer
       , Api.Templates.Base.Header
+      , Api.Templates.Base.Home
+      , Api.Templates.Base.About
       , Api.Templates.Helpers.Htmx
       , Api.Templates.Helpers.Alpine
       , Api.Templates.Helpers.Icons
@@ -60,6 +62,7 @@ library
       , dani-servant-lucid2
       , text
       , transformers
+      , time
       , unordered-containers
       , wai
       , wai-extra

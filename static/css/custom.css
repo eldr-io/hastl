@@ -3,3 +3,19 @@
 @tailwind utilities;
 
 [x-cloak] { display: none !important; }
+.smooth {
+  transition: all 1s ease-in;
+}
+
+a {
+  color: #9E358F;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.bg-primary {
+  background-color: rgb(93, 79, 133);
+}
