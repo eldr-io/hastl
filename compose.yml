@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   db:
-    image: postgres:14.1-alpine
+    image: docker.io/postgres:14.1-alpine
     restart: always
     environment:
       - POSTGRES_USER=postgres
