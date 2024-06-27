@@ -32,4 +32,4 @@ test: ## runs the unit test project
 
 .PHONY: test-integration
 test-integration: ## runs the integration test project
-	cabal test hastl-test-integration --test-show-details=direct
+	cabal test hastl-test-integration --enable-tests --test-show-details=direct

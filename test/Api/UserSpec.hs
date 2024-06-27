@@ -21,8 +21,8 @@ spec = before
     describe "templates" $ do
       context "when rendering a user" $ do
         it "renders a user" $
-          ( \t -> do
-              let user = User{userName = "user", userEmail = "hi@mom.com", userCreatedAt = t}
-              -- let entity = Entity (Key user) user
+          ( \currentTime -> do
+              let user = User{userName = "user", userEmail = "hi@mom.com", userCreatedAt = currentTime}
+              --let entity = Entity (Key user) user
               userName user `shouldBe` "user"
           )
