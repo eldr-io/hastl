@@ -3,7 +3,7 @@
 <div align="center">
 <img src="https://github.com/eldr-io/hastl/assets/83576392/0da858b9-7f42-4be9-aa6f-336332884400" width="50%" />
 
-<h3 align="center">Production ready, modern web-application stater template</h3>
+<h3 align="center">Production ready, modern web-application starter template</h3>
 
 <p align="center"> hastl is a modern Haskell web application using <b>(H)</b>tmx, <b>(A)</b>lpine.js, <b>(S)</b>ervant, <b>(T)</b>ailwind-css and <b>(L)</b>ucid. It is based on the awesome <a href="https://github.com/parsonsmatt/servant-persistent">servant-persistent</a> example and is licensed under <a href="https://github.com/eldr-io/hastl/blob/main/LICENSE.md">MIT</a> and is entirely free and open source.
 </p>
