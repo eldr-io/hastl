@@ -23,6 +23,6 @@ spec = before
         it "renders a user" $
           ( \currentTime -> do
               let user = User{userName = "user", userEmail = "hi@mom.com", userCreatedAt = currentTime}
-              --let entity = Entity (Key user) user
+              let entity = Entity (Key user) user
               userName user `shouldBe` "user"
           )

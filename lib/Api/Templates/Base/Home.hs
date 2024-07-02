@@ -20,35 +20,35 @@ import Lucid (
 
 renderHome :: Lucid.Html ()
 renderHome =
-  Lucid.div_ [Lucid.class_ "mt-4"] $ do
-    Lucid.div_
-      [Lucid.class_ "max-w-screen-xl mx-auto"]
+  div_ [class_ "mt-4"] $ do
+    div_
+      [class_ "max-w-screen-xl mx-auto"]
       $ do
-        Lucid.h1_ [Lucid.class_ "text-3xl font-bold text-gray-900"] "Welcome to hastl"
-        Lucid.p_ [Lucid.class_ "text-gray-600"] $ do
+        h1_ [class_ "text-3xl font-bold text-gray-900"] "Welcome to hastl"
+        p_ [class_ "text-gray-600"] $ do
           "hastl is a modern "
-          Lucid.a_ [Lucid.href_ "haskell.org", Lucid.target_ "_blank"] "Haskell"
+          a_ [href_ "haskell.org", target_ "_blank"] "Haskell"
           " web application using "
-          Lucid.b_ "(H)tmx, "
-          Lucid.b_ "(A)lpine.js, "
-          Lucid.b_ "(S)ervant, "
-          Lucid.b_ "(T)ailwind-css "
+          b_ "(H)tmx, "
+          b_ "(A)lpine.js, "
+          b_ "(S)ervant, "
+          b_ "(T)ailwind-css "
           "and"
-          Lucid.b_ "(L)ucid. "
+          b_ "(L)ucid. "
           "It is licensed under MIT and is entirely free and open source."
-        Lucid.br_ []
+        br_ []
         renderBadges
-        Lucid.p_ [Lucid.class_ "text-gray-600 mt-5"] "Try it out below by adding guests to your awesome party!"
+        p_ [class_ "text-gray-600 mt-5"] "Try it out below by adding guests to your awesome party!"
         renderAddUserForm
-        Lucid.p_ [Lucid.class_ "text-xs text-gray-500 mt-2 mx-auto text-center"] "* Don't worry, we won't actually send anything!"
-    Lucid.div_ [hxGet_ "/users", hxSwap_ "innerHTML", hxTrigger_ "load"] $ Lucid.p_ "Loading..."
+        p_ [class_ "text-xs text-gray-500 mt-2 mx-auto text-center"] "* Don't worry, we won't actually send anything!"
+    div_ [hxGet_ "/users", hxSwap_ "innerHTML", hxTrigger_ "load"] $ p_ "Loading..."
 
-renderBadge :: Text -> Lucid.Html ()
-renderBadge src = Lucid.img_ [Lucid.class_ "col-span-1 inline", Lucid.src_ src]
+renderBadge :: Text -> Html ()
+renderBadge src = img_ [class_ "col-span-1 inline", src_ src]
 
-renderBadges :: Lucid.Html ()
+renderBadges :: Html ()
 renderBadges =
-  Lucid.div_ [Lucid.class_ "mx-auto max-w-screen-xl"] $ do
+  div_ [class_ "mx-auto max-w-screen-xl"] $ do
     mapM_ renderBadge badges
  where
   badges =
