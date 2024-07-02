@@ -22,7 +22,12 @@ spec = before
       context "when rendering a user" $ do
         it "renders a user" $
           ( \currentTime -> do
-              let user = User{userName = "user", userEmail = "hi@mom.com", userCreatedAt = currentTime}
-              let entity = Entity (Key user) user
+              let user =
+                    User
+                      { userName = "user"
+                      , userEmail = "hi@mom.com"
+                      , userCreatedAt = currentTime
+                      }
+              -- let entity = Entity (Key user) user
               userName user `shouldBe` "user"
           )

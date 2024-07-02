@@ -10,12 +10,9 @@ import Database.Persist.Postgresql (
   Entity (..),
   getEntity,
   insert,
-  selectFirst,
   selectList,
-  (==.),
  )
 import Servant (
-  Capture,
   Get,
   HasServer (ServerT),
   JSON,
@@ -23,7 +20,6 @@ import Servant (
   Proxy (..),
   ReqBody,
   ServerError (errBody, errHTTPCode, errHeaders),
-  err404,
   err500,
   throwError,
   type (:<|>) (..),
@@ -38,7 +34,6 @@ import Data.Time (getCurrentTime)
 import GHC.Generics (Generic)
 import Lucid (Html, ToHtml (toHtml), class_, div_, id_, renderBS)
 import Models (User (User), runDb, tryRunDb)
-import Models qualified as Md
 import Servant.API.ContentTypes.Lucid (HTML)
 
 data CreateUserPayload = CreateUserPayload
@@ -51,7 +46,6 @@ instance FromJSON CreateUserPayload
 
 type UserAPI =
   "users" :> Get '[HTML] (Html ())
-    :<|> "users" :> Capture "name" Data.Text.Text :> Get '[JSON] (Entity User)
     :<|> "users" :> ReqBody '[JSON] CreateUserPayload :> Post '[HTML] (Html ())
 
 userApi :: Proxy UserAPI
@@ -59,7 +53,7 @@ userApi = Proxy
 
 -- | The server that runs the UserAPI
 userServer :: (MonadIO m) => ServerT UserAPI (AppT m)
-userServer = allUsers :<|> singleUser :<|> createUser
+userServer = allUsers :<|> createUser
 
 -- | Returns all users in the database.
 allUsers :: (MonadIO m) => AppT m (Html ())
@@ -67,18 +61,6 @@ allUsers = do
   logDebugNS "web" "allUsers"
   users :: [Entity User] <- runDb (selectList [] [])
   return $ renderUsersComponent users
-
--- | Returns a user by name or throws a 404 error.
-singleUser :: (MonadIO m) => Data.Text.Text -> AppT m (Entity User)
-singleUser str = do
-  logDebugNS "web" "singleUser"
-  maybeUser <- runDb (selectFirst [Md.UserName ==. str] [])
-  case maybeUser of
-    Nothing -> do
-      logDebugNS "web" "failed to find user"
-      throwError err404
-    Just person ->
-      return person
 
 -- | Creates a user in the database.
 createUser :: (MonadIO m) => CreateUserPayload -> AppT m (Html ())

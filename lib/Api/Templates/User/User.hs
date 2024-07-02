@@ -6,7 +6,26 @@ import Api.Templates.Helpers.Htmx (hxExt_, hxPost_, hxSwap_, hxTarget_)
 import Data.Text qualified as T
 import Database.Persist (Entity (entityKey, entityVal))
 import Database.Persist.Postgresql (fromSqlKey)
-import Lucid
+import Lucid (
+  Html,
+  ToHtml (toHtml),
+  alt_,
+  button_,
+  class_,
+  div_,
+  form_,
+  h3_,
+  id_,
+  img_,
+  input_,
+  li_,
+  name_,
+  p_,
+  placeholder_,
+  src_,
+  type_,
+  ul_,
+ )
 import Models (User (userName))
 
 renderAddUserForm :: Html ()
