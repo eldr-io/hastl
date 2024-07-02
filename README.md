@@ -27,7 +27,7 @@ hastl is primarily tested with PostgreSQL but it uses the popular <a href="https
 </p>
 <p align="left"><b>Live reloading with GHCID</b> - since we're writing almost all of our code in the backend, hastl uses GHCID to instantly reload your project as you make changes
 </p>
-<p align="left"><b>Integration testing with TestContainers (COMING SOON)</b> - hastl uses <a href="https://testcontainers.com">testcontainers</a> to spin up a database on the fly to run integration tests and give you confidence in your business logic
+<p align="left"><b>Integration testing with TestContainers</b> - hastl uses <a href="https://testcontainers.com">testcontainers</a> to spin up a database on the fly to run integration tests and give you confidence in your business logic
 </p>
 
 
@@ -56,6 +56,28 @@ To run the development live reloading mode, make sure that <a href="https://gith
 ```
 make ghcid-devel
 ```
+
+#### Running unit tests
+
+The unit tests of the project can be found in the `test` directory and can assert things like HTML generation from database types. 
+
+You can run all the unit tests with:
+
+```
+make test
+```
+
+#### Running integration tests
+
+Hastl ships with built-in integration tests that use testcontainers to start a local postgreSQL database inside a container (using docker or podman) on-the-fly, as well as running the project web-server, allowing the tests to exercise the actual HTTP endpoints to assert correctness.
+
+The integration tests manage the containers, starting them and tearing them down as the tests complete.
+
+You can run all the integration tests with:
+```
+make integration-test
+```
+
 #### Changing the routes and templates
 
 *COMING SOON*

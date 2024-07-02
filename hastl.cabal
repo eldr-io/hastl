@@ -108,9 +108,12 @@ test-suite hastl-test
 test-suite hastl-test-integration
     import:           warnings
     default-language: GHC2021
+    default-extensions:
+      OverloadedStrings
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test-integration
     main-is:          Main.hs
+    other-modules: TestHttpSpec
     build-depends:
         base ^>=4.17.2.1,
         hastl,

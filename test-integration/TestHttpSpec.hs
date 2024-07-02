@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module TestHttpSpec (specHttp) where
 
 import Test.Hspec 
@@ -9,10 +8,12 @@ import Network.HTTP.Simple
 
 containers :: TC.TestContainer Int
 containers = do
+  image <- TC.build (TC.fromBuildContext "./" (Just "./test-integration/test-server/Dockerfile"))
   tc <-
     TC.run
-      ( TC.containerRequest
-          (TC.fromBuildContext "./" (Just "./test-integration/test-server/Dockerfile"))
+      ( TC.containerRequest image
+          TC.& TC.setFixedName "hastl-integration-test"
+          TC.& TC.withFollowLogs TC.consoleLogConsumer 
           TC.& TC.setExpose [8000]
           TC.& TC.setWaitingFor (TC.waitUntilMappedPortReachable 8000)
       )
