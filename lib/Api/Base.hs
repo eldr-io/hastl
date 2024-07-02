@@ -5,17 +5,11 @@ module Api.Base where
 
 import Lucid (
   Html,
-  a_,
   body_,
-  br_,
   class_,
   div_,
   doctypehtml_,
-  h1_,
-  href_,
   id_,
-  p_,
-  target_,
  )
 import Servant (
   Get,

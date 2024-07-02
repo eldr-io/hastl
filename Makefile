@@ -3,7 +3,7 @@ help: ## print make targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: ghcid-devel
-ghcid-devel: ## Run the server in fast development mode. See lib/DevelMain.hs for details.
+ghcid-devel: tailwind-build ## Run the server in fast development mode. See lib/DevelMain.hs for details.
 	ghcid \
 	    --command "cabal repl hastl" \
 	    --test DevelMain.update \

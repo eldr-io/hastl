@@ -74,7 +74,8 @@ singleUser str = do
   logDebugNS "web" "singleUser"
   maybeUser <- runDb (selectFirst [Md.UserName ==. str] [])
   case maybeUser of
-    Nothing ->
+    Nothing -> do
+      logDebugNS "web" "failed to find user"
       throwError err404
     Just person ->
       return person
