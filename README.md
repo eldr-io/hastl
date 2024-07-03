@@ -75,7 +75,7 @@ The integration tests manage the containers, starting them and tearing them down
 
 You can run all the integration tests with:
 ```
-make integration-test
+make test-integration
 ```
 
 #### Changing the routes and templates
