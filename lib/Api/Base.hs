@@ -27,7 +27,7 @@ import Api.Templates.Base.Home (renderHome)
 import Api.Templates.Helpers.Alpine (useAlpine)
 import Api.Templates.Helpers.Htmx (useHtmxJsExt, useHtmxVersion)
 import Config (AppT)
-import Control.Monad.Cont (MonadIO)
+import Control.Monad.IO.Class (MonadIO)
 import Data.Text (Text)
 import Servant.API.ContentTypes.Lucid (HTML)
 

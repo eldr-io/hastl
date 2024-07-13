@@ -4,7 +4,7 @@
 
 module Api.User where
 
-import Control.Monad.Except (MonadIO (liftIO))
+import Control.Monad.IO.Class (MonadIO (liftIO))
 import Control.Monad.Logger (logDebugNS, logErrorNS)
 import Database.Persist.Postgresql (
   Entity (..),
