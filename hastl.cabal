@@ -40,7 +40,7 @@ library
     build-depends:    
       katip == 0.8.8.0, 
       aeson >= 2.2.2 && < 2.3,
-      base ^>= {4.17.2, 4.18.2},
+      base ^>= {4.17.2, 4.18.2, 4.19},
       containers >= 0.6.7 && < 0.7,
       random >= 1.2.1 && < 1.3,
       bytestring >= 0.11.5 && < 0.12,
@@ -79,7 +79,7 @@ executable hastl
     -- other-modules:
     -- other-extensions:
     build-depends:
-        base ^>= {4.17.2, 4.18.2},
+        base ^>= {4.17.2, 4.18.2, 4.19},
         hastl
 
     hs-source-dirs:   app
@@ -97,7 +97,7 @@ test-suite hastl-test
     main-is:          Main.hs
     build-tool-depends: hspec-discover:hspec-discover
     build-depends:
-        base ^>= {4.17.2, 4.18.2}
+        base ^>= {4.17.2, 4.18.2, 4.19}
       , hastl
       , hspec
       , persistent-postgresql
@@ -115,7 +115,7 @@ test-suite hastl-test-integration
     main-is:          Main.hs
     other-modules: TestHttpSpec
     build-depends:
-        base ^>= {4.17.2, 4.18.2},
+        base ^>= {4.17.2, 4.18.2, 4.19},
         hastl,
         hspec,
         testcontainers,
