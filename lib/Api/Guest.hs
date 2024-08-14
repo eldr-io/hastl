@@ -26,48 +26,48 @@ import Servant (
   type (:>),
  )
 
-import Api.Templates.User.User (renderUser, renderUsersComponent)
+import Api.Templates.Guest.Guest (renderGuest, renderGuestsComponent)
 import Config (AppT (..))
 import Data.Aeson (FromJSON)
 import Data.Text (Text, pack)
 import Data.Time (getCurrentTime)
 import GHC.Generics (Generic)
 import Lucid (Html, ToHtml (toHtml), class_, div_, id_, renderBS)
-import Models (User (User), runDb, tryRunDb)
+import Models (Guest (Guest), runDb, tryRunDb)
 import Servant.API.ContentTypes.Lucid (HTML)
 
-data CreateUserPayload = CreateUserPayload
+data CreateGuestPayload = CreateGuestPayload
   { name :: Text
   , email :: Text
   }
   deriving (Generic)
 
-instance FromJSON CreateUserPayload
+instance FromJSON CreateGuestPayload
 
-type UserAPI =
-  "users" :> Get '[HTML] (Html ())
-    :<|> "users" :> ReqBody '[JSON] CreateUserPayload :> Post '[HTML] (Html ())
+type GuestAPI =
+  "guests" :> Get '[HTML] (Html ())
+    :<|> "guests" :> ReqBody '[JSON] CreateGuestPayload :> Post '[HTML] (Html ())
 
-userApi :: Proxy UserAPI
-userApi = Proxy
+guestApi :: Proxy GuestAPI
+guestApi = Proxy
 
--- | The server that runs the UserAPI
-userServer :: (MonadIO m) => ServerT UserAPI (AppT m)
-userServer = allUsers :<|> createUser
+-- | The server that runs the guestAPI
+guestServer :: (MonadIO m) => ServerT GuestAPI (AppT m)
+guestServer = allGuests :<|> createGuest
 
--- | Returns all users in the database.
-allUsers :: (MonadIO m) => AppT m (Html ())
-allUsers = do
-  logDebugNS "web" "allUsers"
-  users :: [Entity User] <- runDb (selectList [] [])
-  return $ renderUsersComponent users
+-- | Returns all guests in the database.
+allGuests :: (MonadIO m) => AppT m (Html ())
+allGuests = do
+  logDebugNS "web" "allGuests"
+  guests :: [Entity Guest] <- runDb (selectList [] [])
+  return $ renderGuestsComponent guests
 
--- | Creates a user in the database.
-createUser :: (MonadIO m) => CreateUserPayload -> AppT m (Html ())
-createUser u = do
-  logDebugNS "web" "creating a user"
+-- | Creates a guest in the database.
+createGuest :: (MonadIO m) => CreateGuestPayload -> AppT m (Html ())
+createGuest u = do
+  logDebugNS "web" "creating a guest"
   time <- liftIO getCurrentTime
-  result <- tryRunDb (insert (User (name u) (email u) time))
+  result <- tryRunDb (insert (Guest (name u) (email u) time))
   case result of
     Left exception -> do
       logErrorNS "web" (Data.Text.pack (show exception))
@@ -88,13 +88,13 @@ createUser u = do
           , errHTTPCode = 200 -- This is a hack to make sure htmx displays our error
           }
     Right key -> do
-      logDebugNS "web" "User created"
-      maybeUser <- runDb (getEntity key)
-      case maybeUser of
+      logDebugNS "web" "guest created"
+      maybeGuest <- runDb (getEntity key)
+      case maybeGuest of
         Nothing -> do
           logErrorNS
             "web"
-            "Failed to create user"
+            "Failed to create guest"
           throwError err500
-        Just user ->
-          return $ renderUser user
+        Just guest ->
+          return $ renderGuest guest

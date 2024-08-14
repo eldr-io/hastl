@@ -80,7 +80,7 @@ make test-integration
 
 #### Changing the routes and templates
 
-Hastl allows you to combine strongly-typed Servant APIs to make up your application. To add a new route and endpoint, you can create a new file similar to `lib/Api/User.hs` e.g. if you wanted to create a Todo-list API you could create `lib/Api/Todo.hs`. Additionally, you can create a new directory within `lib/Api/Templates` to store your Lucid-powered Haskell template files. Within the template files, you have access to the full power of HTMX and Alpine through helper functions.
+Hastl allows you to combine strongly-typed Servant APIs to make up your application. To add a new route and endpoint, you can create a new file similar to `lib/Api/Guest.hs` e.g. if you wanted to create a Todo-list API you could create `lib/Api/Todo.hs`. Additionally, you can create a new directory within `lib/Api/Templates` to store your Lucid-powered Haskell template files. Within the template files, you have access to the full power of HTMX and Alpine through helper functions.
 
 If you wish to use persistent models in your application, you can define your models in `lib/Models.hs` and persistent will automatically create the Haskell types, as well as handling the database migrations for DEVELOPMENT setups (note: is it recommended to use a more robust migration mechanism for production).
 

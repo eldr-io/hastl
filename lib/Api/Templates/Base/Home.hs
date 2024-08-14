@@ -1,7 +1,7 @@
 module Api.Templates.Base.Home where
 
 import Api.Templates.Helpers.Htmx (hxGet_, hxSwap_, hxTrigger_)
-import Api.Templates.User.User (renderAddUserForm)
+import Api.Templates.Guest.Guest (renderAddGuestForm)
 import Data.Text (Text)
 import Lucid (
   Html,
@@ -39,9 +39,9 @@ renderHome =
         br_ []
         renderBadges
         p_ [class_ "text-gray-600 mt-5"] "Try it out below by adding guests to your awesome party!"
-        renderAddUserForm
+        renderAddGuestForm
         p_ [class_ "text-xs text-gray-500 mt-2 mx-auto text-center"] "* Don't worry, we won't actually send anything!"
-    div_ [hxGet_ "/users", hxSwap_ "innerHTML", hxTrigger_ "load"] $ p_ "Loading..."
+    div_ [hxGet_ "/guests", hxSwap_ "innerHTML", hxTrigger_ "load"] $ p_ "Loading..."
 
 renderBadge :: Text -> Html ()
 renderBadge src = img_ [class_ "col-span-1 inline", src_ src]

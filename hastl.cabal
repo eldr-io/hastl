@@ -23,9 +23,9 @@ library
       , Init
       , Models
       , Api
-      , Api.User
+      , Api.Guest
       , Api.Base
-      , Api.Templates.User.User
+      , Api.Templates.Guest.Guest
       , Api.Templates.Base.Footer
       , Api.Templates.Base.Header
       , Api.Templates.Base.Home
@@ -89,7 +89,7 @@ test-suite hastl-test
     import:           warnings
     default-language: GHC2021
     other-modules:
-      Api.UserSpec
+      Api.GuestSpec
     default-extensions:
       OverloadedStrings
     type:             exitcode-stdio-1.0
