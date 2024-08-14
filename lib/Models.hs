@@ -37,7 +37,7 @@ share
   , mkMigrate "migrateAll"
   ]
   [persistLowerCase|
-User json
+Guest json
     name Text
     email Text
     createdAt UTCTime default=now()

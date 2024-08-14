@@ -12,15 +12,15 @@ import Servant (
  )
 import Servant.Server
 
-import Api.User (UserAPI, userApi, userServer)
+import Api.Guest (GuestAPI, guestApi, guestServer)
 import Api.Base (BaseAPI, baseApi, baseServer)
 import Config (AppT (..), Config (..))
 
 {- | This functions tells Servant how to run the 'App' monad with our
 'server' function.
 -}
-appToUserServer :: Config -> Server UserAPI
-appToUserServer cfg = hoistServer userApi (convertApp cfg) userServer
+appToGuestServer :: Config -> Server GuestAPI
+appToGuestServer cfg = hoistServer guestApi (convertApp cfg) guestServer
 
 
 appToBaseServer :: Config -> Server BaseAPI
@@ -46,7 +46,7 @@ two different APIs and applications. This is a powerful tool for code
 reuse and abstraction! We need to put the 'Raw' endpoint last, since it
 always succeeds.
 -}
-type AppAPI = UserAPI :<|> BaseAPI :<|> Raw
+type AppAPI = GuestAPI :<|> BaseAPI :<|> Raw
 
 appApi :: Proxy AppAPI
 appApi = Proxy
@@ -56,6 +56,6 @@ alongside the 'Raw' endpoint that serves all of our files.
 -}
 app :: Config -> Application
 app cfg = do
-  let userServerCfg = appToUserServer cfg
+  let userServerCfg = appToGuestServer cfg
       appServerCfg = appToBaseServer cfg
   serve appApi (userServerCfg :<|> appServerCfg :<|> files)
