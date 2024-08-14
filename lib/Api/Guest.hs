@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeOperators #-}
 
-module Api.User where
+module Api.Guest where
 
 import Control.Monad.IO.Class (MonadIO (liftIO))
 import Control.Monad.Logger (logDebugNS, logErrorNS)
