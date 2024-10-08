@@ -84,6 +84,10 @@ Hastl allows you to combine strongly-typed Servant APIs to make up your applicat
 
 If you wish to use persistent models in your application, you can define your models in `lib/Models.hs` and persistent will automatically create the Haskell types, as well as handling the database migrations for DEVELOPMENT setups (note: is it recommended to use a more robust migration mechanism for production).
 
+#### Documentation Recipes
+
+- [Using UUIDs instead of Integer IDs as Primary Keys in database](https://github.com/eldr-io/hastl/blob/main/docs/recipes/using-uuids-for-db-ids.md)
+
 [Haskell]: https://img.shields.io/badge/haskell-5D4F85?style=for-the-badge&logo=haskell&logoColor=white
 [Haskell-url]: https://haskell.org
 [Htmx]:  https://img.shields.io/badge/htmxjs-3366CC?style=for-the-badge&logo=htmx&logoColor=white
