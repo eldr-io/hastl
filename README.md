@@ -51,10 +51,10 @@ This will build and run hastl and you should be able to navigate to `localhost:8
 
 ![Screenshot from 2024-06-08 15-41-54](https://github.com/eldr-io/hastl/assets/83576392/19af0d8e-33b8-411e-a19e-e2e4f8c3420f)
 
-To run the development live reloading mode, make sure that <a href="https://github.com/ndmitchell/ghcid">ghcid</a> is installed and then use the ghcid-devel target:
+To run the development live reloading mode, make sure that <a href="https://github.com/ndmitchell/ghcid">ghcid</a> is installed and then use the watch target:
 
 ```
-make ghcid-devel
+make watch
 ```
 
 #### Running unit tests

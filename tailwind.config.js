@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export const content = [
-    "./lib/Api/Templates/**/*.hs",
-    "./lib/Api/*.hs",
+    "./src/Api/Templates/**/*.hs",
+    "./src/Api/*.hs",
 ];
 export const theme = {
     container: {
