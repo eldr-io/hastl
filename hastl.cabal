@@ -70,7 +70,7 @@ library
       safe >= 0.3.21 && < 0.4,
       say >= 0.1.0 && < 0.2,
       wai-middleware-metrics >= 0.2.4 && < 0.3,
-    hs-source-dirs:   lib
+    hs-source-dirs:   src
     default-language: GHC2021
 
 executable hastl

@@ -27,7 +27,7 @@ renderHome =
         h1_ [class_ "text-3xl font-bold text-gray-900"] "Welcome to hastl"
         p_ [class_ "text-gray-600"] $ do
           "hastl is a modern "
-          a_ [href_ "haskell.org", target_ "_blank"] "Haskell"
+          a_ [href_ "https://haskell.org", target_ "_blank"] "Haskell"
           " web application using "
           b_ "(H)tmx, "
           b_ "(A)lpine.js, "

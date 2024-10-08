@@ -51,10 +51,10 @@ This will build and run hastl and you should be able to navigate to `localhost:8
 
 ![Screenshot from 2024-06-08 15-41-54](https://github.com/eldr-io/hastl/assets/83576392/19af0d8e-33b8-411e-a19e-e2e4f8c3420f)
 
-To run the development live reloading mode, make sure that <a href="https://github.com/ndmitchell/ghcid">ghcid</a> is installed and then use the ghcid-devel target:
+To run the development live reloading mode, make sure that <a href="https://github.com/ndmitchell/ghcid">ghcid</a> is installed and then use the watch target:
 
 ```
-make ghcid-devel
+make watch
 ```
 
 #### Running unit tests
@@ -83,6 +83,10 @@ make test-integration
 Hastl allows you to combine strongly-typed Servant APIs to make up your application. To add a new route and endpoint, you can create a new file similar to `lib/Api/Guest.hs` e.g. if you wanted to create a Todo-list API you could create `lib/Api/Todo.hs`. Additionally, you can create a new directory within `lib/Api/Templates` to store your Lucid-powered Haskell template files. Within the template files, you have access to the full power of HTMX and Alpine through helper functions.
 
 If you wish to use persistent models in your application, you can define your models in `lib/Models.hs` and persistent will automatically create the Haskell types, as well as handling the database migrations for DEVELOPMENT setups (note: is it recommended to use a more robust migration mechanism for production).
+
+#### Documentation Recipes
+
+- [Using UUIDs instead of Integer IDs as Primary Keys in database](https://github.com/eldr-io/hastl/blob/main/docs/recipes/using-uuids-for-db-ids.md)
 
 [Haskell]: https://img.shields.io/badge/haskell-5D4F85?style=for-the-badge&logo=haskell&logoColor=white
 [Haskell-url]: https://haskell.org
