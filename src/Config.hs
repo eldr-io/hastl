@@ -12,7 +12,7 @@ import Control.Monad.Except (ExceptT, MonadError)
 import Control.Monad.IO.Class
 import Control.Monad.Logger (MonadLogger (..), runNoLoggingT)
 import Control.Monad.Reader (MonadReader, ReaderT, asks)
-import Control.Monad.Trans.Class
+import Control.Monad.Trans.Class (MonadTrans (lift))
 import Control.Monad.Trans.Maybe (MaybeT (..), runMaybeT)
 import Data.ByteString.Char8 qualified as BS
 import Database.Persist.Postgresql
@@ -56,7 +56,7 @@ data Config
   { configPool :: ConnectionPool,
     configEnv :: Environment,
     configLogEnv :: LogEnv,
-    configPort :: Port
+    configPort :: Network.Wai.Handler.Warp.Port
   }
 
 -- | Katip instance for @AppT m@
