@@ -20,10 +20,17 @@ import Database.Persist.Postgresql
     ConnectionString,
     createPostgresqlPool,
   )
-import Logger
+import Logger (LogEnv, Katip(..), KatipT(..), logMsg, adapt, runKatipT, logInfoJSON)
 import Network.Wai (Middleware)
 import Network.Wai.Handler.Warp (Port)
 import Network.Wai.Middleware.RequestLogger (logStdout, logStdoutDev)
+import Network.Wai qualified as WAI
+import Network.HTTP.Types qualified as HTTP
+
+import Data.Text.Encoding qualified as TE
+import Data.Time (getCurrentTime, diffUTCTime)
+import Data.Aeson qualified as A
+import Data.Aeson ((.=))
 import Servant.Server.Internal.ServerError (ServerError)
 import System.Environment (lookupEnv)
 
@@ -86,13 +93,49 @@ setLogger Test = id
 setLogger Development = logStdoutDev
 setLogger Production = logStdout
 
--- | Web request logger (currently unimplemented and unused). For inspiration
--- see ApacheLogger from wai-logger package.
+-- | Environment-aware logger that uses JSON for production
+setJSONLogger :: Environment -> LogEnv -> Middleware
+setJSONLogger Test _ = id
+setJSONLogger Development env = katipLogger env
+setJSONLogger Production env = katipLogger env
+
+-- | JSON-based HTTP request logger using Katip
 katipLogger :: LogEnv -> Middleware
-katipLogger env app req respond = runKatipT env $ do
-  -- todo: log proper request data
-  logMsg "web" InfoS "todo: received some request"
-  liftIO $ app req respond
+katipLogger env app req respond = do
+  startTime <- getCurrentTime
+  runKatipT env $ do
+    -- Log incoming request
+    logInfoJSON "http_request" $ A.object
+      [ "method" .= TE.decodeUtf8 (WAI.requestMethod req)
+      , "path" .= TE.decodeUtf8 (WAI.rawPathInfo req)
+      , "query" .= TE.decodeUtf8 (WAI.rawQueryString req)
+      , "remote_host" .= show (WAI.remoteHost req)
+      , "user_agent" .= maybe "" (TE.decodeUtf8) (lookup "User-Agent" (WAI.requestHeaders req))
+      , "content_type" .= maybe "" (TE.decodeUtf8) (lookup "Content-Type" (WAI.requestHeaders req))
+      , "timestamp" .= startTime
+      ]
+  
+  -- Call the application and capture response
+  app req $ \response -> do
+    endTime <- getCurrentTime
+    let status = WAI.responseStatus response
+    let statusCode = HTTP.statusCode status
+    let duration = realToFrac $ diffUTCTime endTime startTime * 1000 -- milliseconds
+    
+    runKatipT env $ do
+      logInfoJSON "http_response" $ A.object
+        [ "method" .= TE.decodeUtf8 (WAI.requestMethod req)
+        , "path" .= TE.decodeUtf8 (WAI.rawPathInfo req)
+        , "status_code" .= statusCode
+        , "status_message" .= TE.decodeUtf8 (HTTP.statusMessage status)
+        , "duration_ms" .= (duration :: Double)
+        , "remote_host" .= show (WAI.remoteHost req)
+        , "timestamp" .= endTime
+        ]
+    
+    respond response
+
+
 
 -- | This function creates a 'ConnectionPool' for the given environment.
 -- For 'Development' and 'Test' environments, we use a stock and highly
